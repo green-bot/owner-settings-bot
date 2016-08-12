@@ -5,6 +5,7 @@
 require "./lib/greenbot.rb"
 require 'mongo'
 require 'awesome_print'
+Mongo::Logger.logger.level = ::Logger::FATAL
 
 MONGO_URL = ENV['MONGO_URL'] || 'mongodb://127.0.0.1:27017/greenbot'
 
