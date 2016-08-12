@@ -1,6 +1,6 @@
 {
-  "name": "__package_name__",
-  "description":"__description__",
+  "name": "owner\-bot",
+  "description":"A bot that will modify the settings of other bots through text messaging",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "bundle exec ruby bot.rb",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "__git_repo_url__"
+    "url": 'https://github.com/green\-bot\/owner_bot/owner\-bot'
   },
   "keywords": [
     "green-bot",
@@ -16,7 +16,7 @@
     "bot",
     "bashbot"
   ],
-  "author": "__author__",
+  "author": "Thomas Howe",
   "license": "MIT",
   "version": "0.1.0"
 }

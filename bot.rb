@@ -1,27 +1,60 @@
 #!/usr/bin/env ruby
 #
 #
-PROMPT_1 = ENV['PROMPT_1'] || 'Default prompt 1'
-PROMPT_2 = ENV['PROMPT_2'] || 'Default prompt 2'
-PROMPT_3 = ENV['PROMPT_3'] || 'Default prompt 3'
-SIGNATURE = ENV['SIGNATURE'] || 'Default signature prompt'
-
 
 require "./lib/greenbot.rb"
-tell PROMPT_1
-issue = note(PROMPT_2)
-if confirm("Would you like someone to contact you?")
-  contact_me = true
-  contact_me.remember("contact_me")
-  name = ask("When we call, who should we ask for?")
-  name.remember("who_to_ask_for")
-  if confirm("Is there another number we should try?")
-    better_number = ask("Please enter that number with an area code")
-    better_number.remember("better_number")
-  end
-else
-  tell("No problem at all.")
-end
-tell PROMPT_3
-tell SIGNATURE
+require 'mongo'
+require 'awesome_print'
 
+MONGO_URL = ENV['MONGO_URL'] || 'mongodb://127.0.0.1:27017/greenbot'
+
+
+client = Mongo::Client.new(MONGO_URL)
+Bots = client[:Bots]
+
+pin = ask("To get started, please provide your PIN")
+pin.upcase!
+
+bot = Bots.find({passcode: pin.strip}).first 
+
+if bot.nil?
+  say("I'm sorry, I cannot find that bot.")
+  return
+end
+
+ALPHA = "ABCDEFGHIJKLMNOP"
+
+
+index = 0
+bot['settings'].sort! {|x,y| x['name'] <=> y['name']}
+bot['settings'].each do |s|
+  s['menu_choice'] = ALPHA[index]
+  index += 1
+end
+
+menu_choices = ''
+bot['settings'].each do |s|
+  menu_choices << s['menu_choice'] + ':' + s['name'] + " "
+end
+menu_choices << "Q:quit"
+
+loop do
+  choice = ask("Please pick the setting to change: #{menu_choices}")
+  choice.strip!
+  choice.upcase!
+  ap choice
+  break if choice == 'Q' 
+  setting = bot['settings'].find  do |s| 
+    s['menu_choice'].eql?(choice)
+  end
+
+  if setting.nil?
+    say("I could not find that setting")
+  else
+    new_val = ask("The current value is: #{setting['value']}. Please send a single mesasge with the new value, or empty to keep.")
+    new_val.strip!
+    Bots.update_one({"$and" => [{ "passcode" => pin.strip}, {"settings.name" => setting['name'] }]}, { '$set' =>  { "settings.$.value" => new_val }} )
+  end
+end 
+
+say("Thank you. Session ended.")
