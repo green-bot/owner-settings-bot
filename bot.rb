@@ -42,7 +42,6 @@ loop do
   choice = ask("Please pick the setting to change: #{menu_choices}")
   choice.strip!
   choice.upcase!
-  ap choice
   break if choice == 'Q' 
   setting = bot['settings'].find  do |s| 
     s['menu_choice'].eql?(choice)
@@ -53,7 +52,11 @@ loop do
   else
     new_val = ask("The current value is: #{setting['value']}. Please send a single mesasge with the new value, or empty to keep.")
     new_val.strip!
-    Bots.update_one({"$and" => [{ "passcode" => pin.strip}, {"settings.name" => setting['name'] }]}, { '$set' =>  { "settings.$.value" => new_val }} )
+    unless new_val.empty?
+      Bots.update_one({"$and" => [{ "passcode" => pin.strip}, {"settings.name" => setting['name'] }]}, { '$set' =>  { "settings.$.value" => new_val }} )
+    else
+      say("Not updating value")
+    end
   end
 end 
 
