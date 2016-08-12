@@ -19,7 +19,7 @@ bot = Bots.find({passcode: pin.strip}).first
 
 if bot.nil?
   say("I'm sorry, I cannot find that bot.")
-  return
+  exit
 end
 
 ALPHA = "ABCDEFGHIJKLMNOP"
