@@ -1,5 +1,5 @@
 {
-  "name": "owner\-bot",
+  "name": "owner-settings-bot",
   "description":"A bot that will modify the settings of other bots through text messaging",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": 'https://github.com/green\-bot\/owner_bot/owner\-bot'
+    "url": "https://github.com/green-bot/owner-settings-bot"
   },
   "keywords": [
     "green-bot",

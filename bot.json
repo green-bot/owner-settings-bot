@@ -1,27 +1,17 @@
 [{
   "default_cmd": "npm start",
-  "default_path": "./node_modules/owner\-bot",
+  "default_path": "./node_modules/owner-settings-bot",
   "default_settings": [
    {
-      "name": "PROMPT_1",
-      "value": "Change me to change prompt 1",
-      "type": "text"
-    },
-    {
-      "name": "PROMPT_2",
-      "value": "Change me to change prompt 2",
-      "type": "text"
-    },
-    {
-      "name": "SIGNATURE",
-      "value": "Thank you, you can visit us on the web at http://www.green-bot.com",
+      "name": "MONGO_URL",
+      "value": "mongodb://localhost:27017/greenbot",
       "type": "text"
     }
   ],
   "desc": "A bot that will modify the settings of other bots through text messaging",
   "icon_class": "information",
-  "name": "owner\-bot",
+  "name": "owner-settings-bot",
   "owner_cmd": "",
   "short_desc": "A bot that will modify the settings of other bots through text messaging",
-  "repo_link": "https://github.com/green\-bot\/owner_bot/owner\-bot"
+  "repo_link": "https://github.com/green-bot/owner-settings-bot"
 }]
