@@ -1,6 +1,6 @@
 {
   "name": "owner-settings-bot",
-  "description":"A bot that will modify the settings of other bots through text messaging",
+  "description": "A bot that will modify the settings of other bots through text messaging",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "bundle exec ruby bot.rb",
@@ -18,5 +18,5 @@
   ],
   "author": "Thomas Howe",
   "license": "MIT",
-  "version": "0.1.0"
+  "version": "0.2.0"
 }
