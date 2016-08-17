@@ -26,24 +26,25 @@ end
 ALPHA = "ABCDEFGHIJKLMNOP"
 
 
-index = 0
-bot['settings'].sort! {|x,y| x['name'] <=> y['name']}
-bot['settings'].each do |s|
-  s['menu_choice'] = ALPHA[index]
-  index += 1
-end
-
-menu_choices = ''
-bot['settings'].each do |s|
-  menu_choices << s['menu_choice'] + ':' + s['name'] + " "
-end
-menu_choices << "Q:quit"
-
 loop do
+  index = 0
+  bot['settings'].sort! {|x,y| x['name'] <=> y['name']}
+  bot['settings'].each do |s|
+    s['menu_choice'] = ALPHA[index]
+    index += 1
+  end
+
+  menu_choices = ''
+  bot['settings'].each do |s|
+    menu_choices << s['menu_choice'] + ':' + s['name'] + " "
+  end
+  menu_choices << "Q:quit"
+
   choice = ask("Please pick the setting to change: #{menu_choices}")
   choice.strip!
   choice.upcase!
   break if choice == 'Q' 
+
   setting = bot['settings'].find  do |s| 
     s['menu_choice'].eql?(choice)
   end
@@ -51,14 +52,19 @@ loop do
   if setting.nil?
     say("I could not find that setting")
   else
-    new_val = ask("The current value is: #{setting['value']}. Please send a single mesasge with the new value, or empty to keep.")
-    new_val.strip!
-    unless new_val.empty?
-      Bots.update_one({"$and" => [{ "passcode" => pin.strip}, {"settings.name" => setting['name'] }]}, { '$set' =>  { "settings.$.value" => new_val }} )
+    change = confirm("The current value is: #{setting['value']}. Change it?")
+    if change
+      new_val = ask("Please send a single message with the new value.")
+      new_val.strip!
+      unless new_val.empty?
+        Bots.update_one({"$and" => [{ "passcode" => pin.strip}, {"settings.name" => setting['name'] }]}, { '$set' =>  { "settings.$.value" => new_val }} )
+        say('Setting updated.')
+      end
     else
       say("Not updating value")
     end
   end
+  bot = Bots.find({passcode: pin.strip}).first 
 end 
 
 say("Thank you. Session ended.")
